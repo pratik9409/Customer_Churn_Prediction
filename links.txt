@@ -1,3 +1,0 @@
-Dataset Link: https://www.kaggle.com/code/deb009/predict-customer-churn/data
-
-report_link: file:///E:/portfolio_projects/customer_churn/churn_analysis.html#pp_var_-3736337166814842184
