@@ -12,6 +12,6 @@ For example, an early stage startup is keen on reducing its customer churn and a
 The dataset consists of parameters such as the user’s demographic details, membership account details, duration and frequency of their visits to the website reported grievances and feedback and more other parameters. Also, the training dataset consists of churn score column, that helped in model training for predicting the churn rate. I have predicted the churn rate score using the XGBoostClassifier as it was giving best accuracy compared to RandomForestClassifier and DecisionTreeClassifier. 
 Created a website, the help in predicting the churn rate and analysis of data.
 
-Website: [https://churn-prediction-cust.herokuapp.com/](https://customer-churn-score-app.herokuapp.com/)
+Website: https://customer-churn-score-app.herokuapp.com/
 
 Dataset: https://www.kaggle.com/code/deb009/predict-customer-churn/data
