@@ -4,13 +4,8 @@ import xgboost as xgb
 import pandas as pd
 
 
-# model = pickle.load(open('xgboost.json', 'rb'))
+model = pickle.load(open('xgboost.pkl', 'rb'))
 
-# model = xgb.Booster()
-# model.load_model("model.txt")
-
-model = xgb.XGBClassifier()
-model.load_model("xgb_model.json")
 
 app = Flask(__name__)
 
