@@ -15,5 +15,6 @@ scipy
 six
 threadpoolctl
 tzdata
+gunicorn
 Werkzeug
 xgboost
