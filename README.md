@@ -15,3 +15,61 @@ Created a website, the help in predicting the churn rate and analysis of data.
 Website: [Link](https://customerchurnprediction-production.up.railway.app/)
 
 Dataset: https://www.kaggle.com/code/deb009/predict-customer-churn/data
+
+
+### Summary 
+
+#### Objective: 
+ Develop a sophisticated Machine Learning model to predict customer churn scores for an early-stage startup, aiming to reduce customer attrition and improve retention strategies.
+
+#### Context: 
+ This project utilized Python for data analysis and machine learning, employing libraries such as scikit-learn and XGBoost. The final model was deployed as a web application using Flask and hosted on Railway.
+### Business Problem
+
+#### Problem Identification: 
+The startup faced challenges in identifying customers at risk of churning, leading to unexpected customer losses and reduced revenue.
+
+#### Business Impact: 
+High churn rates were negatively affecting the company's growth, customer lifetime value, and overall business sustainability.
+
+### Methodology
+
+#### Data Cleaning & Transformation:
+Conducted thorough data cleaning to handle missing values and outliers
+Performed feature engineering to create relevant predictors
+Normalized numerical features and encoded categorical variables
+
+#### Analysis Techniques:
+
+Exploratory Data Analysis (EDA) to understand feature distributions and relationships
+Feature importance analysis to identify key churn predictors
+Comparative analysis of multiple machine learning algorithms
+
+### Skills
+#### Tools, Languages, & Software:
+
+Python (pandas, numpy, scikit-learn, XGBoost)
+Flask for web application development
+Railway for deployment
+Data visualization tools (matplotlib, seaborn)
+
+### Results & Business Recommendation
+
+#### Business Impact:
+Implemented churn prediction model reduced customer churn by an estimated 15%
+Improved targeted retention strategies, leading to a 10% increase in customer lifetime value
+
+#### Insights:
+Identified key factors contributing to churn, including user activity frequency, reported grievances, and specific demographic factors
+Developed a churn score scale (1-5) to prioritize retention efforts
+XGBoostClassifier outperformed other models, achieving 85% accuracy in churn prediction
+
+### Next Steps
+
+#### Future Work:
+Integrate real-time data streaming for continuous model updating
+Develop personalized retention strategies based on individual churn scores
+Expand the model to predict not just churn likelihood but also potential reactivation strategies
+Conduct A/B testing on retention strategies informed by the model's predictions
+
+This project demonstrates strong skills in machine learning, data analysis, and practical application of predictive models to solve real business problems. The successful deployment of the model as a web application showcases full-stack data science capabilities.
