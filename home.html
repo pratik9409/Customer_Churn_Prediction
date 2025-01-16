@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">    
+    <title>Customer Churn Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f5d784;
+        }
+        .navbar-brand {
+            display: block;
+            margin: auto;
+            color: sienna;
+            font-weight: bold;
+            font-family: "Helvetica";
+        }
+        .submit-button {
+            display: block;
+            margin: auto;
+            border-size: 2rem;
+            border-color: #13c26b;
+            border-radius: 20%;
+        }
+        h1 {
+            color: #d6064f;
+            font-weight: bold;
+            font-family: 'Arial', sans-serif;
+        }
+        h3 {
+            text-align: center;
+            font-weight: bold;
+            color: #02157d;
+            font-family: 'Cooper Black', serif;
+        }
+        h5 {
+            color: green;
+            font-weight: bold;
+        }
+        .card {
+            display: block;
+            margin: auto;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            background-color: #9be2e8;
+            border-radius: 10%;
+        }
+        .btn {
+            font-weight: bold;
+        }
+        p {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #d47d0b;
+            font-weight: bold;
+        }
+        p:hover {
+            color: #4a2a01;
+            font-weight: bold;
+            font-style: normal;
+            font-family: 'Helvetica',sans-serif;
+            font-size: 1.6rem;
+            filter: brightness(150%);
+        }
+        .first_row {
+            margin-top: 3rem;
+        }
+        .last_row {
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-light" style="background-color: #fde3e9;">
+        <span class="navbar-brand mb-0 h1"><h1>Customer Churn Prediction<h1></span>
+    </nav>
+    <div class="container">
+        <form action="/predict" method="post">
+            <div class="row first_row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Age:</h5>
+                            <input type="number" min="10" max="64" name="age" id="age" required="required">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Gender:</h5>
+                            <select name="gender" id="gender" required="required">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Region category:</h5>
+                            <select name="region" id="region" required="required">
+                                <option value="Village">Village</option>
+                                <option value="Town">Town</option>
+                                <option value="City">City</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Membership category:</h5>
+                            <select name="membership_category" id="membership_category" required="required">
+                                {% for category in mem_categories %} 
+                                        <option value="{{category}}" SELECTED>{{category}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Has the customer joined through referral?</h5>
+                            <select name="joined_through_referral" id="joined_through_referral" required="required">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                                <option value="Unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Preferred offer type:</h5>
+                            <select name="preferred_offer_types" id="preferred_offer_types" required="required">
+                                <option value="Gift Vouchers/Coupons">Gift Vouchers/Coupons</option>
+                                <option value="Credit/Debit Card Offers">Credit/Debit Card Offers</option>
+                                <option value="Without Offers">Without Offers</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Medium of operation used by the customer for transactions:</h5>
+                            <select name="medium_of_operation" id="medium_of_operation" required="required">
+                                {% for medium in operation_mediums %} 
+                                        <option value="{{medium}}" SELECTED>{{medium}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Type of internet service used by the customer:</h5>
+                            <select name="internet_option" id="internet_option" required="required">
+                                <option value="Wi-Fi">Wi-Fi</option>
+                                <option value="Mobile Data">Mobile Data</option>
+                                <option value="Fiber Optic">Fiber Optic</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Days since last login:</h5>
+                            <input type="number" min="0" max="30" name="days_since_last_login" id="days_since_last_login" required="required">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Average time spent by customer on the firm's website(in minutes):</h5>
+                            <input type="number" min="0" max="801" name="avg_time_spent" id="avg_time_spent" required="required">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Average transaction value of the customer:</h5>
+                            <input type="number" min="800.460" max="80871.465" step="0.001" name="avg_transaction_val" id="avg_transaction_val" required="required">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Number of times the customer has logged into the company's website:</h5>
+                            <input type="number" min="0" max="73" name="avg_frequency_login_days" id="avg_frequency_login_days" required="required">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Points awarded to the customer on each transaction:</h5>
+                            <input type="number" min="425.37" max="955.98" step="0.01" name="points_in_wallet" id="points_in_wallet" required="required">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Has the customer availed any special discount offered by the company:</h5>
+                            <select name="used_special_discount" id="used_special_discount" required="required">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Does the customer prefer any special offers provided by the company?</h5>
+                            <select name="offer_application_preference" id="offer_application_preference" required="required">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Did the customer raise any complaints earlier?</h5>
+                            <select name="past_complaint" id="past_complaint" required="required">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Were the past complaints raised by the customer resolved?</h5>
+                            <select name="complaint_status" id="complaint_status" required="required">
+                                <option value="Solved">Solved</option>
+                                <option value="Unsolved">Unsolved</option>
+                                <option value="Unknown">Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Customer's feedback:</h5>
+                            <select name="feedback" id="feedback" required="required">
+                                <option value="Poor Product Quality">Poor Product Quality</option>
+                                <option value="Too many ads">Too many ads</option>
+                                <option value="Poor Website">Poor Website</option>
+                                <option value="Poor Customer Service">Poor Customer Service</option>
+                                <option value="Reasonable Price">Reasonable Price</option>
+                                <option value="User Friendly Website">User Friendly Website</option>
+                                <option value="Products always in Stock">Products always in Stock</option>
+                                <option value="Quality Customer Care">Quality Customer Care</option>
+                                <option value="None">None</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">On which day did the customer join the company?</h5>
+                            <input type="number" min="1" max="31" name="joining_day" id="joining_day" required="required">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">What was the year in which the customer joined?</h5>
+                            <select name="joining_year" id="joining_year" required="required">
+                                <option value="2015">2015</option>
+                                <option value="2016">2016</option>
+                                <option value="2017">2017</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">During which month did the customer join?</h5>
+                            <select name="joining_month" id="joining_month" required="required">
+                                {% for opt in months %} 
+                                        <option value="{{opt}}" SELECTED>{{opt}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">On which week day did the customer join?</h5>
+                            <select name="joining_day_of_week" id="joining_day_of_week" required="required">
+                                {% for day in weekdays %} 
+                                        <option value="{{day}}" SELECTED>{{day}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">What was the hour during which the customer last visited the company's website?</h5>
+                            <input type="number" min="0" max="23" name="last_visit_hour" id="last_visit_hour" required="required">
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">What was the minute during which the customer last visited the company's website?</h5>
+                            <input type="number" min="0" max="59" name="last_visit_min" id="last_visit_min" required="required">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row last_row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">What was the second during which the customer last visited the company's website?</h5>
+                            <input type="number" min="0" max="59" name="last_visit_sec" id="last_visit_sec" required="required">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <!-- Submit -->
+            <input type="submit" value="Submit" class="btn btn-primary btn-lg submit-button" style="background-color: #ab13c2;">
+        </form>
+        <br>
+        <h3 class="predict-dec">{{ prediction_text }}</h3> 
+        <br>
+        <p>@{{ current_year }} Sayam Kumar</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+</body>
+</html>
